@@ -18,11 +18,11 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-green-900/80 backdrop-blur-md text-white px-6 sticky top-0 z-50 shadow-lg">
+    <div className="navbar bg-green-900/80 backdrop-blur-md text-white px-6 py-6 sticky top-0 z-50 shadow-lg">
       {/* Left Side - LOGO + Name */}
       <div className="flex-1 flex items-center gap-3">
         <img
-          src="/logo.jpg"
+          src="/assets/logo.png"
           alt="KrishiLink"
           className="w-10 h-10 rounded-full object-cover"
         />
@@ -78,7 +78,7 @@ const Navbar = () => {
 
             <button
               onClick={handleLogout}
-              className="px-3 py-1 rounded-lg bg-red-500 hover:bg-red-600"
+              className="px-3 py-1 rounded-lg bg-green-500 hover:bg-green-600"
             >
               Logout
             </button>
