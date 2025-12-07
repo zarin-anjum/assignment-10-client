@@ -35,7 +35,7 @@ const Blogs = () => {
                 <p className="text-gray-600 mb-4 flex-1">{blog.description}</p>
                 <a
                   href={blog.link}
-                  className="mt-auto inline-block text-green-50 bg-green-800 hover:bg-green-900 px-4 py-2 rounded-full font-medium transition-colors text-center"
+                  className="mt-auto inline-block text-green-50 bg-linear-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 px-4 py-2 rounded-full font-medium transition-colors text-center"
                 >
                   Read More
                 </a>
