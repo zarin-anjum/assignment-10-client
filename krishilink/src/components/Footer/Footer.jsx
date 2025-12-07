@@ -32,10 +32,10 @@ const Footer = () => {
             </li>
             <li>
               <a
-                href="/AllPosts"
+                href="/AllCrops"
                 className="hover:text-white transition-colors"
               >
-                Browse Posts
+                All Crops
               </a>
             </li>
             <li>
