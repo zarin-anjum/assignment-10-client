@@ -7,6 +7,7 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import PrivateRoutes from "./PrivateRoutes"
 import CropDetails from "../Pages/CropDetails/CropDetails";
 import AllCrops from "../Pages/AllCrops/AllCrops";
+import AddCrop from "../Pages/AddCrop/AddCrop";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
           </PrivateRoutes>
         ),
       },
+      {
+        path: "/add-crop",
+        element: (
+          <PrivateRoutes>
+            <AddCrop />
+          </PrivateRoutes>
+        )
+      }
     ],
   },
 ]);

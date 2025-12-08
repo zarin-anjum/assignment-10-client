@@ -47,7 +47,7 @@ const CropDetails = () => {
         {/* Crop Info + Interest */}
         <div className="lg:w-1/2 flex flex-col gap-8">
           {/* Crop Information */}
-          <div className="bg-gradient-to-r from-green-100 to-green-50 p-6 rounded-xl shadow-lg border border-green-200">
+          <div className="bg-linear-to-r from-green-100 to-green-50 p-6 rounded-xl shadow-lg border border-green-200">
             <h2 className="text-3xl font-bold text-gray-800 mb-3">
               {crop.name}
             </h2>

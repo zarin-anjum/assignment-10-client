@@ -87,7 +87,7 @@ const Login = () => {
   };
 
   return (
-    <div className="lg:min-h-screen p-12 flex justify-center items-center bg-[#E0F7FA]">
+    <div className="lg:min-h-screen p-12 flex justify-center items-center bg-green-100">
       <Helmet>
         <title>KrishiLink – Login</title> 
       </Helmet>
