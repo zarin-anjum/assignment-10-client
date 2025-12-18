@@ -6,6 +6,7 @@ const AddCrop = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -31,8 +32,13 @@ const AddCrop = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!formData.name || !formData.type || !formData.pricePerUnit) {
-      return alert("Please fill out all required fields.");
+      alert("Please fill out all required fields.");
+      setIsSubmitting(false); // Reset submitting state
+      return;
     }
 
     const cropData = {
@@ -44,7 +50,7 @@ const AddCrop = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/crops", {
+      const res = await fetch("http://localhost:5000/api/crops/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,18 +60,20 @@ const AddCrop = () => {
 
       const data = await res.json();
 
-      if (data.insertedId) {
+      if (res.ok) {
         setShowSuccess(true);
-
-        // redirect after short delay
         setTimeout(() => {
           setShowSuccess(false);
           navigate("/my-posts");
         }, 1500);
+      } else {
+        alert(data.message || "Failed to add crop");
       }
     } catch (error) {
       console.error(error);
       alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false); 
     }
   };
 
@@ -214,6 +222,7 @@ const AddCrop = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full py-3 rounded-xl text-white font-semibold text-lg shadow-md bg-linear-to-r from-green-600 to-green-800 hover:from-green-700 hover:to-green-900 transition"
           >
             Add Crop

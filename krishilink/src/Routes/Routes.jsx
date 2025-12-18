@@ -8,6 +8,7 @@ import PrivateRoutes from "./PrivateRoutes"
 import CropDetails from "../Pages/CropDetails/CropDetails";
 import AllCrops from "../Pages/AllCrops/AllCrops";
 import AddCrop from "../Pages/AddCrop/AddCrop";
+import MyPosts from "../Pages/MyPosts/MyPosts";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoutes>
             <AddCrop />
+          </PrivateRoutes>
+        )
+      },
+      {
+        path: "/my-posts",
+        element: (
+          <PrivateRoutes>
+            <MyPosts />
           </PrivateRoutes>
         )
       }
