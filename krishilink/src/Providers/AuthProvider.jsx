@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import auth from "../firebase.config";
 
@@ -40,6 +41,14 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
+  
+  //Update Profile
+  const updateUserProfile = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    });
+  };
 
   // Observe user state
   useEffect(() => {
@@ -58,12 +67,11 @@ const AuthProvider = ({ children }) => {
     signIn,
     googleLogin,
     logOut,
+    updateUserProfile,
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
 
