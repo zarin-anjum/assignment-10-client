@@ -9,7 +9,8 @@ import CropDetails from "../Pages/CropDetails/CropDetails";
 import AllCrops from "../Pages/AllCrops/AllCrops";
 import AddCrop from "../Pages/AddCrop/AddCrop";
 import MyPosts from "../Pages/MyPosts/MyPosts";
-import Profile from "../Pages/Profile/Profile"
+import Profile from "../Pages/Profile/Profile";
+import MyInterests from "../Pages/MyInterests/MyInterests";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoutes>
             <Profile />
+          </PrivateRoutes>
+        )
+      },
+      {
+        path: "/my-interests",
+        element: (
+          <PrivateRoutes>
+            <MyInterests />
           </PrivateRoutes>
         )
       }
