@@ -28,7 +28,7 @@ https://assignment-10-krishilink-zarin.netlify.app/
   Fully responsive UI optimized for mobile, tablet, and desktop devices.
 
 
-## 🛠️ Technologies Used
+# Technologies Used
 
 - **Frontend:** React, Tailwind CSS, React Router
 - **Backend:** Node.js, Express.js
