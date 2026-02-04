@@ -18,7 +18,7 @@ const CropDetails = () => {
   const [hasInterested, setHasInterested] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/crops/${cropId}`)
+    fetch(`https://krishilink-server-omega.vercel.app/api/crops/${cropId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch crop");
         return res.json();
@@ -36,7 +36,7 @@ const CropDetails = () => {
 
   useEffect(() => {
     if (crop && user?.email === crop.owner.ownerEmail) {
-      fetch(`http://localhost:5000/api/interests/crop/${crop._id}`)
+      fetch(`https://krishilink-server-omega.vercel.app/api/interests/crop/${crop._id}`)
         .then((res) => res.json())
         .then((data) => setInterests(data))
         .catch((err) => console.error(err));
@@ -46,7 +46,7 @@ const CropDetails = () => {
   useEffect(() => {
     if (!user?.email || !crop) return;
 
-    fetch(`http://localhost:5000/api/interests/my-interests/${user.email}`)
+    fetch(`https://krishilink-server-omega.vercel.app/api/interests/my-interests/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         const alreadySent = data.some(
@@ -85,10 +85,10 @@ const CropDetails = () => {
       return;
     }
 
-    console.log("OWNER EMAIL:", crop.farmerEmail);
+    console.log("OWNER EMAIL:", crop.owner?.ownerEmail);
 
     if (submitted) {
-      toast("You already sent an interest");
+      toast.error("You've already sent an interest for this crop");
       return;
     }
 
@@ -111,7 +111,7 @@ const CropDetails = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/interests/add", {
+      const res = await fetch("https://krishilink-server-omega.vercel.app/api/interests/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(interestData),
@@ -138,7 +138,7 @@ const CropDetails = () => {
   const handleUpdateStatus = async (interestId, newStatus) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/interests/${interestId}`,
+        `https://krishilink-server-omega.vercel.app/api/interests/${interestId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

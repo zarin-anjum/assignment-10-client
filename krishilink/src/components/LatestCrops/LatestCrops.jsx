@@ -7,7 +7,7 @@ const LatestCrops = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/crops")
+    fetch("https://krishilink-server-omega.vercel.app/api/crops")
       .then((res) => res.json())
       .then((data) => {
         const latestSix = data

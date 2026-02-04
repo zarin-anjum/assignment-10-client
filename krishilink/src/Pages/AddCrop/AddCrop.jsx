@@ -38,7 +38,7 @@ const AddCrop = () => {
 
     if (!formData.name || !formData.type || !formData.pricePerUnit) {
       alert("Please fill out all required fields.");
-      setIsSubmitting(false); // Reset submitting state
+      setIsSubmitting(false); 
       return;
     }
 
@@ -60,7 +60,7 @@ const AddCrop = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/crops/add", {
+      const res = await fetch("https://krishilink-server-omega.vercel.app/api/crops/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

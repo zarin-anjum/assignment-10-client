@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Helmet } from "react-helmet";
 
 const MyPosts = () => {
@@ -13,7 +13,7 @@ const MyPosts = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:5000/api/crops/my-crops/${user.email}`)
+    fetch(`https://krishilink-server-omega.vercel.app/api/crops/my-crops/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setCrops(data);
@@ -58,7 +58,7 @@ const MyPosts = () => {
   const handleDelete = async (id) => {
     confirmDelete(async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/crops/${id}`, {
+        const res = await fetch(`https://krishilink-server-omega.vercel.app/api/crops/${id}`, {
           method: "DELETE",
         });
 
@@ -85,7 +85,7 @@ const MyPosts = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/crops/${editCrop._id}`,
+        `https://krishilink-server-omega.vercel.app/api/crops/${editCrop._id}`,
         {
           method: "PUT",
           headers: {
