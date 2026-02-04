@@ -6,15 +6,15 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8">
         {/* Brand Info */}
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 lg:gap-3">
             <img
               src="/assets/logo.png"
               alt="KrishiLink logo"
-              className="w-10 h-10 rounded-full"
+              className="w-5 lg:w-10 h-5 lg:h-10 rounded-full"
             />
-            <h2 className="text-2xl font-bold">KrishiLink</h2>
+            <h2 className="text-lg lg:text-2xl font-bold">KrishiLink</h2>
           </div>
-          <p className="text-sm md:text-base leading-relaxed text-white/90">
+          <p className="text-xs lg:text-sm md:text-base leading-relaxed text-white/90">
             KrishiLink connects farmers, traders, and consumers in one digital
             space. Share your crops, browse posts, and grow your agricultural
             network efficiently.
@@ -23,8 +23,8 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
-          <ul className="space-y-2 text-white/90">
+          <h3 className="text-sm lg:text-lg font-semibold mb-3">Quick Links</h3>
+          <ul className="space-y-1 lg:space-y-2 text-white/90">
             <li>
               <a href="/" className="hover:text-white transition-colors">
                 Home
@@ -39,20 +39,20 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/about" className="hover:text-white transition-colors">
+              <a href="/" className="hover:text-white transition-colors">
                 About Us
               </a>
             </li>
             <li>
               <a
-                href="/privacy-policy"
+                href="/"
                 className="hover:text-white transition-colors"
               >
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="/terms" className="hover:text-white transition-colors">
+              <a href="/" className="hover:text-white transition-colors">
                 Terms & Conditions
               </a>
             </li>
@@ -61,8 +61,8 @@ const Footer = () => {
 
         {/* Categories */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Categories</h3>
-          <ul className="space-y-2 text-white/90">
+          <h3 className=" text-sm lg:text-lg font-semibold mb-3">Categories</h3>
+          <ul className="space-y-1 lg:space-y-2 text-white/90">
             <li>
               <a href="#" className="hover:text-white transition-colors">
                 Crops

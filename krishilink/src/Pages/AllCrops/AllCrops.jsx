@@ -1,18 +1,44 @@
-// src/pages/AllCrops/AllCrops.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CropCard from "../../components/CropCard/CropCard";
-import { crops } from "../../data/crops"; 
+import { Helmet } from "react-helmet";
 
 const AllCrops = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [crops, setCrops] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/crops")
+      .then((res) => res.json())
+      .then((data) => {
+        setCrops(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch crops:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <p className="text-center mt-20 text-gray-600 text-lg">
+        Loading crops...
+      </p>
+    );
+  }
 
   // Filter crops based on search term
   const filteredCrops = crops.filter((crop) =>
-    crop.name.toLowerCase().includes(searchTerm.toLowerCase())
+    crop.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
     <div className="px-12 py-12 bg-linear-to-b from-gray-50 to-green-50">
+      <Helmet>
+        <title>KrishiLink – All Crops</title> 
+      </Helmet>
+
       <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
         All Crops
       </h2>
@@ -34,7 +60,7 @@ const AllCrops = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredCrops.map((crop) => (
-            <CropCard key={crop.id} crop={crop} />
+            <CropCard key={crop._id} crop={crop} />
           ))}
         </div>
       )}

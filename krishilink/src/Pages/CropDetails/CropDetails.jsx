@@ -1,35 +1,162 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { crops } from "../../data/crops";
 import { AuthContext } from "../../Providers/AuthProvider";
+import toast from "react-hot-toast";
 
 const CropDetails = () => {
   const { cropId } = useParams();
+  const [crop, setCrop] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
-
-  const crop = crops.find((c) => c.id === parseInt(cropId));
+  const [interests, setInterests] = useState([]);
 
   // State for Interest Form
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [hasInterested, setHasInterested] = useState(false);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/crops/${cropId}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch crop");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched crop:", data);
+        setCrop(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [cropId]);
+
+  useEffect(() => {
+    if (crop && user?.email === crop.owner.ownerEmail) {
+      fetch(`http://localhost:5000/api/interests/crop/${crop._id}`)
+        .then((res) => res.json())
+        .then((data) => setInterests(data))
+        .catch((err) => console.error(err));
+    }
+  }, [crop, user]);
+
+  useEffect(() => {
+    if (!user?.email || !crop) return;
+
+    fetch(`http://localhost:5000/api/interests/my-interests/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const alreadySent = data.some(
+          (interest) => interest.cropId === crop._id,
+        );
+        setHasInterested(alreadySent);
+        setSubmitted(alreadySent);
+      })
+      .catch((err) => console.error(err));
+  }, [user, crop]);
+
+  if (loading) {
+    return <p className="text-center mt-20">Loading...</p>;
+  }
 
   if (!crop) {
     return <p className="text-center mt-20 text-red-500">Crop not found!</p>;
   }
 
   // Check if logged-in user is the owner
-  const isOwner = user?.email === crop.farmerEmail;
+  const isOwner = user?.email === crop.owner?.ownerEmail;
 
   // Calculate total price
-  const totalPrice = quantity * parseInt(crop.price.replace(/[^\d]/g, ""));
+  const totalPrice = quantity * crop.pricePerUnit;
 
   // Submit interest handler
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (quantity < 1) return alert("Quantity must be at least 1");
+    if (quantity < 1) return toast.error("Quantity must be at least 1");
     setShowModal(true);
+  };
+
+  const handleSendInterest = async () => {
+    if (!user?.email) {
+      toast.error("Please login first");
+      return;
+    }
+
+    console.log("OWNER EMAIL:", crop.farmerEmail);
+
+    if (submitted) {
+      toast("You already sent an interest");
+      return;
+    }
+
+    const interestData = {
+      cropId: crop._id,
+      cropName: crop.name,
+      quantity: Number(quantity),
+      message,
+      status: "pending",
+
+      requester: {
+        email: user?.email,
+        name: user?.displayName,
+      },
+
+      owner: {
+        ownerEmail: crop.owner.ownerEmail,
+        ownerName: crop.owner.ownerName,
+      },
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/interests/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(interestData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("BACKEND ERROR:", data);
+        toast.error(data.message || "Failed to send interest");
+        return;
+      }
+
+      setSubmitted(true);
+      setHasInterested(true);
+      setShowModal(false);
+      toast.success("Interest sent successfully 🌱");
+    } catch (err) {
+      console.error(err);
+      toast.error("❌ Server error. Please try again.");
+    }
+  };
+
+  const handleUpdateStatus = async (interestId, newStatus) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/interests/${interestId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        },
+      );
+
+      if (!res.ok) throw new Error("Failed to update status");
+
+      const updatedInterest = await res.json();
+
+      setInterests((prev) =>
+        prev.map((i) => (i._id === updatedInterest._id ? updatedInterest : i)),
+      );
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update interest status");
+    }
   };
 
   return (
@@ -52,14 +179,15 @@ const CropDetails = () => {
               {crop.name}
             </h2>
             <p className="text-green-800 font-semibold text-2xl mb-3">
-              {crop.price}
+              {crop.pricePerUnit} Tk / {crop.unit}
             </p>
             <div className="text-gray-600 space-y-1">
               <p>
                 <span className="font-medium">Location:</span> {crop.location}
               </p>
               <p>
-                <span className="font-medium">Farmer:</span> {crop.farmer}
+                <span className="font-medium">Farmer:</span>{" "}
+                {crop.owner?.ownerName}
               </p>
               <p>
                 <span className="font-medium">Posted At:</span> {crop.postedAt}
@@ -71,7 +199,7 @@ const CropDetails = () => {
           </div>
 
           {/* Interest Form for Non-Owner */}
-          {!isOwner && !submitted && (
+          {!isOwner && !hasInterested && (
             <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
               <h3 className="text-2xl font-semibold mb-4 border-b pb-2 text-gray-700">
                 Send Interest
@@ -134,10 +262,7 @@ const CropDetails = () => {
                 <div className="flex justify-center gap-4">
                   <button
                     className="px-6 py-2 bg-green-600 text-white font-semibold rounded-full shadow hover:bg-green-700 transition-colors"
-                    onClick={() => {
-                      setSubmitted(true);
-                      setShowModal(false);
-                    }}
+                    onClick={handleSendInterest}
                   >
                     Confirm
                   </button>
@@ -153,7 +278,7 @@ const CropDetails = () => {
           )}
 
           {/* Already Submitted Message */}
-          {!isOwner && submitted && (
+          {!isOwner && hasInterested && (
             <div className="bg-yellow-100 p-4 rounded-lg text-yellow-800 font-semibold border border-yellow-200 text-center">
               You've already sent an interest for this crop.
             </div>
@@ -165,7 +290,7 @@ const CropDetails = () => {
               <h3 className="text-2xl font-semibold mb-4 border-b pb-2 text-gray-700">
                 Received Interests
               </h3>
-              {crop.interests && crop.interests.length > 0 ? (
+              {interests.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full table-auto border border-gray-200 rounded-lg overflow-hidden">
                     <thead className="bg-green-50">
@@ -180,15 +305,13 @@ const CropDetails = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {crop.interests.map((interest, idx) => (
+                      {interests.map((interest, idx) => (
                         <tr
                           key={interest._id}
-                          className={`${
-                            idx % 2 === 0 ? "bg-gray-50" : "bg-white"
-                          } hover:bg-green-50`}
+                          className={`${idx % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-green-50`}
                         >
                           <td className="border px-4 py-2">
-                            {interest.userName}
+                            {interest.requester.name}
                           </td>
                           <td className="border px-4 py-2">
                             {interest.quantity}
@@ -200,12 +323,36 @@ const CropDetails = () => {
                             {interest.status}
                           </td>
                           <td className="border px-4 py-2 flex gap-2">
-                            <button className="px-3 py-1 bg-green-700 text-white rounded hover:bg-green-800 transition">
-                              Accept
-                            </button>
-                            <button className="px-3 py-1 bg-red-700 text-white rounded hover:bg-red-800 transition">
-                              Reject
-                            </button>
+                            {interest.status === "pending" ? (
+                              <>
+                                <button
+                                  onClick={() =>
+                                    handleUpdateStatus(interest._id, "accepted")
+                                  }
+                                  className="px-3 py-1 bg-green-700 text-white rounded"
+                                >
+                                  Accept
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleUpdateStatus(interest._id, "rejected")
+                                  }
+                                  className="px-3 py-1 bg-red-700 text-white rounded"
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            ) : (
+                              <span
+                                className={`font-semibold ${
+                                  interest.status === "accepted"
+                                    ? "text-green-700"
+                                    : "text-red-700"
+                                }`}
+                              >
+                                {interest.status.toUpperCase()}
+                              </span>
+                            )}
                           </td>
                         </tr>
                       ))}

@@ -119,7 +119,7 @@ const Register = () => {
         <title>KrishiLink – Registration</title> 
       </Helmet>
       <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6">Register</h2>
+        <h2 className="text-lg md:text-2xl font-semibold text-center mb-6">Register</h2>
 
         <form onSubmit={handleRegister} className="space-y-2 md:space-y-4">
           <div>

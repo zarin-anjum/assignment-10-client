@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const AddCrop = () => {
   const { user } = useContext(AuthContext);
@@ -42,10 +43,19 @@ const AddCrop = () => {
     }
 
     const cropData = {
-      ...formData,
+      name: formData.name,
+      type: formData.type,
+      pricePerUnit: Number(formData.pricePerUnit),
+      unit: formData.unit,
+      quantity: Number(formData.quantity),
+      description: formData.description,
+      location: formData.location,
+      image: formData.image,
+
       owner: {
         ownerEmail: user.email,
         ownerName: user.displayName,
+        ownerPhoto: user.photoURL || "",
       },
     };
 
@@ -73,12 +83,16 @@ const AddCrop = () => {
       console.error(error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setIsSubmitting(false); 
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="bg-linear-to-b from-gray-50 to-green-50 py-12">
+      <Helmet>
+        <title>KrishiLink – Add Crops</title> 
+      </Helmet>
+
       <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-green-800 mb-6">
           📦 Add New Crop
@@ -184,6 +198,7 @@ const AddCrop = () => {
               value={formData.description}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
+              required
             ></textarea>
           </div>
 

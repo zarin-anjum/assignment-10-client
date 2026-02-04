@@ -4,25 +4,25 @@ import { FaUsers, FaSeedling, FaHandshake, FaCheckCircle } from "react-icons/fa"
 const stats = [
   {
     id: 1,
-    icon: <FaUsers className="text-green-800 text-4xl mb-3" />,
+    icon: <FaUsers className="text-green-800 text-3xl lg:text-4xl mb-3" />,
     value: "500+",
     label: "Farmers Connected",
   },
   {
     id: 2,
-    icon: <FaSeedling className="text-green-800 text-4xl mb-3" />,
+    icon: <FaSeedling className="text-green-800 text-3xl lg:text-4xl mb-3" />,
     value: "1200+",
     label: "Crops Posted",
   },
   {
     id: 3,
-    icon: <FaHandshake className="text-green-800 text-4xl mb-3" />,
+    icon: <FaHandshake className="text-green-800 text-3xl lg:text-4xl mb-3" />,
     value: "800+",
     label: "Successful Trades",
   },
   {
     id: 4,
-    icon: <FaCheckCircle className="text-green-800 text-4xl mb-3" />,
+    icon: <FaCheckCircle className="text-green-800 text-3xl lg:text-4xl mb-3" />,
     value: "98%",
     label: "Satisfied Users",
   },
@@ -32,7 +32,7 @@ const PlatformHighlights = () => {
   return (
     <section className="pt-14 pb-16">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-xl lg:text-3xl font-bold text-gray-800 mb-12">
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-12">
           Platform Highlights
         </h2>
 
@@ -43,7 +43,7 @@ const PlatformHighlights = () => {
               className="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl"
             >
               {stat.icon}
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
+              <h3 className="text-xl lg:text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
               <p className="text-gray-700">{stat.label}</p>
             </div>
           ))}

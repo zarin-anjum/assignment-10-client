@@ -20,19 +20,19 @@ const Navbar = () => {
   return (
     <div className="navbar bg-green-900/80 backdrop-blur-md text-white px-6 py-6 sticky top-0 z-50 shadow-lg">
       {/* Left Side - LOGO + Name */}
-      <div className="flex-1 flex items-center gap-3">
+      <div className="flex-1 flex items-center gap-1 lg:gap-3">
         <img
           src="/assets/logo.png"
           alt="KrishiLink"
-          className="w-10 h-10 rounded-full object-cover"
+          className="w-5 lg:w-10 h-5 lg:h-10 rounded-full object-cover"
         />
-        <Link to="/" className="text-xl font-semibold tracking-wide">
+        <Link to="/" className="text-lg lg:text-xl font-semibold tracking-wide">
           KrishiLink
         </Link>
       </div>
 
       {/* Right Side - NAV LINKS */}
-      <div className="flex-none hidden md:flex gap-6 items-center">
+      <div className="flex-none hidden md:flex gap-3 lg:gap-6 items-center">
         {/* If NOT logged in */}
         {!user && (
           <>
@@ -60,7 +60,7 @@ const Navbar = () => {
             <Link to="/" className="hover:text-green-200">
               Home
             </Link>
-            <Link to="/all-crops" className="hover:text-green-200">
+            <Link to="/allcrops" className="hover:text-green-200">
               All Crops
             </Link>
             <Link to="/profile" className="hover:text-green-200">

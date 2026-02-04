@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import toast, { Toaster } from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 const MyPosts = () => {
   const { user } = useContext(AuthContext);
@@ -50,7 +51,7 @@ const MyPosts = () => {
           </div>
         </div>
       ),
-      { duration: Infinity }
+      { duration: Infinity },
     );
   };
 
@@ -91,14 +92,14 @@ const MyPosts = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(editCrop),
-        }
+        },
       );
 
       const data = await res.json();
 
       if (res.ok) {
         setCrops((prev) =>
-          prev.map((c) => (c._id === editCrop._id ? data.crop : c))
+          prev.map((c) => (c._id === editCrop._id ? data.crop : c)),
         );
 
         setShowEditModal(false);
@@ -113,56 +114,62 @@ const MyPosts = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      <Helmet>
+        <title>KrishiLink – My Posts</title> 
+      </Helmet>
+
       <Toaster position="top-right" reverseOrder={false} />
-      <h2 className="text-2xl font-bold mb-6">📦 My Crop Posts</h2>
+      <h2 className="text-lg lg:text-2xl font-bold mb-6">📦 My Crop Posts</h2>
 
       {crops.length === 0 ? (
         <p className="text-center text-lg">No crops added yet.</p>
       ) : (
         <>
-          <table className="w-full border">
-            {" "}
-            <thead className="bg-green-200">
+          <div className="overflow-x-auto shadow">
+            <table className="min-w-[700px] w-full border border-gray-300">
               {" "}
-              <tr>
+              <thead className="bg-green-200">
                 {" "}
-                <th className="border p-2">Name</th>{" "}
-                <th className="border p-2">Type</th>{" "}
-                <th className="border p-2">Price</th>{" "}
-                <th className="border p-2">Quantity</th>{" "}
-                <th className="border p-2">Actions</th>{" "}
-              </tr>{" "}
-            </thead>{" "}
-            <tbody>
-              {" "}
-              {crops.map((crop) => (
-                <tr key={crop._id} className="text-center align-middle">
+                <tr>
                   {" "}
-                  <td className="border p-2">{crop.name}</td>{" "}
-                  <td className="border p-2">{crop.type}</td>{" "}
-                  <td className="border p-2">{crop.pricePerUnit}</td>{" "}
-                  <td className="border p-2">{crop.quantity}</td>{" "}
-                  <td className="border p-2 space-x-2">
+                  <th className="border p-2">Name</th>{" "}
+                  <th className="border p-2">Type</th>{" "}
+                  <th className="border p-2">Price</th>{" "}
+                  <th className="border p-2">Quantity</th>{" "}
+                  <th className="border p-2">Actions</th>{" "}
+                </tr>{" "}
+              </thead>{" "}
+              <tbody>
+                {" "}
+                {crops.map((crop) => (
+                  <tr key={crop._id} className="text-center align-middle">
                     {" "}
-                    <button
-                      onClick={() => handleEdit(crop)}
-                      className="px-3 py-1 bg-blue-600 text-white rounded"
-                    >
+                    <td className="border p-2">{crop.name}</td>{" "}
+                    <td className="border p-2">{crop.type}</td>{" "}
+                    <td className="border p-2">{crop.pricePerUnit}</td>{" "}
+                    <td className="border p-2">{crop.quantity}</td>{" "}
+                    <td className="border p-2 space-x-2">
                       {" "}
-                      Edit{" "}
-                    </button>{" "}
-                    <button
-                      onClick={() => handleDelete(crop._id)}
-                      className="px-3 py-1 bg-red-500 text-white rounded"
-                    >
-                      {" "}
-                      Delete{" "}
-                    </button>{" "}
-                  </td>{" "}
-                </tr>
-              ))}{" "}
-            </tbody>{" "}
-          </table>
+                      <button
+                        onClick={() => handleEdit(crop)}
+                        className="px-3 py-1 bg-blue-600 text-white rounded"
+                      >
+                        {" "}
+                        Edit{" "}
+                      </button>{" "}
+                      <button
+                        onClick={() => handleDelete(crop._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded"
+                      >
+                        {" "}
+                        Delete{" "}
+                      </button>{" "}
+                    </td>{" "}
+                  </tr>
+                ))}{" "}
+              </tbody>{" "}
+            </table>
+          </div>
 
           {showEditModal && editCrop && (
             <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">

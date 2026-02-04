@@ -53,10 +53,10 @@ const Slider = () => {
 
             {/* Text Overlay */}
             <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center text-white px-4">
-              <h2 className="text-2xl lg:text-4xl font-bold mb-3 drop-shadow-lg">
+              <h2 className="text-xl md:text-2xl lg:text-4xl font-bold mb-3 drop-shadow-lg">
                 {slide.title}
               </h2>
-              <p className="text-sm lg:text-lg max-w-lg drop-shadow-md">
+              <p className="text-xs md:text-sm lg:text-lg max-w-lg drop-shadow-md">
                 {slide.description}
               </p>
             </div>
