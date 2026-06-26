@@ -8,7 +8,7 @@ An online marketplace connecting farmers directly with buyers. Farmers can list 
 
 ## Screenshot
 
-> *(Add a screenshot of your homepage here)*
+![KrishiLink](./Screenshot.png)
 
 ---
 
