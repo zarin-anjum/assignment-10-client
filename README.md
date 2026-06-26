@@ -101,10 +101,3 @@ DB_PASS=your_mongodb_password
 node index.js
 ```
 
----
-
-## Relevant Links
-
-- 🌐 [Live Site](https://krishilink-zarin.netlify.app)
-- 💻 [Client Repo](https://github.com/zarin-anjum/assignment-10-client)
-
